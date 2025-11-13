@@ -1,0 +1,39 @@
+#include <stdio.h>
+
+// Function to check if an element already exists in the array
+int exists(int arr[], int size, int value) {
+    for (int i = 0; i < size; i++)
+        if (arr[i] == value)
+            return 1;
+    return 0;
+}
+
+// Function to calculate the sum of squares of distinct counts of all subarrays
+int sumOfSquaresDistinctCounts(int nums[], int n) {
+    int sum = 0;
+
+    for (int i = 0; i < n; i++) {
+        int distinct[100]; // Temporary array to store distinct elements
+        int count = 0;
+
+        for (int j = i; j < n; j++) {
+            if (!exists(distinct, count, nums[j])) {
+                distinct[count] = nums[j];
+                count++;
+            }
+            sum += count * count; // Add square of distinct count
+        }
+    }
+
+    return sum;
+}
+
+int main() {
+    int nums[] = {1, 2, 1};
+    int n = sizeof(nums) / sizeof(nums[0]);
+
+    int result = sumOfSquaresDistinctCounts(nums, n);
+    printf("Output: %d\n", result);
+
+    return 0;
+}
