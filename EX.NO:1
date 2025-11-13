@@ -1,0 +1,36 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdbool.h>
+
+// Function to check if a string is palindrome
+bool isPalindrome(char str[]) {
+    int left = 0;
+    int right = strlen(str) - 1;
+    while (left < right) {
+        if (str[left] != str[right])
+            return false;
+        left++;
+        right--;
+    }
+    return true;
+}
+
+int main() {
+    // Example input
+    char words[][100] = {"abc", "car", "ada", "racecar", "cool"};
+    int n = sizeof(words) / sizeof(words[0]);
+    int found = 0;
+
+    for (int i = 0; i < n; i++) {
+        if (isPalindrome(words[i])) {
+            printf("Output: \"%s\"\n", words[i]);
+            found = 1;
+            break;
+        }
+    }
+
+    if (!found)
+        printf("Output: \"\"\n");  // No palindrome found
+
+    return 0;
+}
