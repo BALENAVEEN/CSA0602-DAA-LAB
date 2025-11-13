@@ -1,0 +1,66 @@
+#include <stdio.h>
+#include <string.h>
+
+#define MAX 100
+
+// Function to check if str2 is a substring of str1
+int isSubstring(char str1[], char str2[]) {
+    int n = strlen(str1);
+    int m = strlen(str2);
+
+    // str2 can't be a substring if it's longer
+    if (m > n) return 0;
+
+    for (int i = 0; i <= n - m; i++) {
+        int j;
+        for (j = 0; j < m; j++) {
+            if (str1[i + j] != str2[j])
+                break;
+        }
+        if (j == m)
+            return 1; // Found substring
+    }
+    return 0;
+}
+
+// Function to find all substring words
+void findSubstrings(char words[][MAX], int size) {
+    int found = 0;
+    printf("Output: [");
+
+    for (int i = 0; i < size; i++) {
+        for (int j = 0; j < size; j++) {
+            if (i != j && isSubstring(words[j], words[i])) {
+                if (found)
+                    printf(", ");
+                printf("\"%s\"", words[i]);
+                found = 1;
+                break; // no need to check more words for this one
+            }
+        }
+    }
+
+    printf("]\n");
+}
+
+int main() {
+    char words1[][MAX] = {"mass", "as", "hero", "superhero"};
+    int size1 = 4;
+
+    char words2[][MAX] = {"leetcode", "et", "code"};
+    int size2 = 3;
+
+    char words3[][MAX] = {"blue", "green", "bu"};
+    int size3 = 3;
+
+    printf("Example 1:\nInput: [\"mass\", \"as\", \"hero\", \"superhero\"]\n");
+    findSubstrings(words1, size1);
+
+    printf("\nExample 2:\nInput: [\"leetcode\", \"et\", \"code\"]\n");
+    findSubstrings(words2, size2);
+
+    printf("\nExample 3:\nInput: [\"blue\", \"green\", \"bu\"]\n");
+    findSubstrings(words3, size3);
+
+    return 0;
+}
