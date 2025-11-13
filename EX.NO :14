@@ -1,0 +1,23 @@
+#include <stdio.h>
+
+// Function to compute nCr (binomial coefficient)
+long long uniquePaths(int m, int n) {
+    long long res = 1;
+    int N = m + n - 2;  // total moves
+    int r = (m < n) ? m - 1 : n - 1; // choose smaller for efficiency
+
+    for (int i = 1; i <= r; i++) {
+        res = res * (N - r + i) / i;
+    }
+    return res;
+}
+
+int main() {
+    int m1 = 7, n1 = 3;
+    int m2 = 3, n2 = 2;
+
+    printf("Input: m = %d, n = %d\nOutput: %lld\n\n", m1, n1, uniquePaths(m1, n1));
+    printf("Input: m = %d, n = %d\nOutput: %lld\n", m2, n2, uniquePaths(m2, n2));
+
+    return 0;
+}
