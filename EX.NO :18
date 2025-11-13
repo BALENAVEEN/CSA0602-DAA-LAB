@@ -1,0 +1,64 @@
+#include <stdio.h>
+
+// Function to sort array in ascending order
+void sortArray(int arr[], int n) {
+    int temp;
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = 0; j < n - i - 1; j++) {
+            if (arr[j] > arr[j + 1]) {
+                temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+            }
+        }
+    }
+}
+
+// Function to print the array
+void printArray(int arr[], int n) {
+    printf("[");
+    for (int i = 0; i < n; i++) {
+        printf("%d", arr[i]);
+        if (i < n - 1)
+            printf(", ");
+    }
+    printf("]\n");
+}
+
+int main() {
+    // Test Case 1: Empty list
+    int arr1[] = {};
+    int n1 = 0;
+    printf("Input: []\nExpected Output: []\n");
+    printf("Actual Output: ");
+    printArray(arr1, n1);
+    printf("\n");
+
+    // Test Case 2: List with one element
+    int arr2[] = {1};
+    int n2 = 1;
+    printf("Input: [1]\nExpected Output: [1]\n");
+    printf("Actual Output: ");
+    sortArray(arr2, n2);
+    printArray(arr2, n2);
+    printf("\n");
+
+    // Test Case 3: List with all identical elements
+    int arr3[] = {7, 7, 7, 7};
+    int n3 = 4;
+    printf("Input: [7, 7, 7, 7]\nExpected Output: [7, 7, 7, 7]\n");
+    printf("Actual Output: ");
+    sortArray(arr3, n3);
+    printArray(arr3, n3);
+    printf("\n");
+
+    // Test Case 4: List with negative numbers
+    int arr4[] = {-5, -1, -3, -2, -4};
+    int n4 = 5;
+    printf("Input: [-5, -1, -3, -2, -4]\nExpected Output: [-5, -4, -3, -2, -1]\n");
+    printf("Actual Output: ");
+    sortArray(arr4, n4);
+    printArray(arr4, n4);
+
+    return 0;
+}
