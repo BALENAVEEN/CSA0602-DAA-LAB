@@ -1,0 +1,41 @@
+#include <stdio.h>
+#include <string.h>
+
+void largeGroupPositions(char *s) {
+    int n = strlen(s);
+    int start = 0;
+    int found = 0;
+
+    for (int i = 0; i < n; i++) {
+        // Check if the current character is the end of a group
+        if (i == n - 1 || s[i] != s[i + 1]) {
+            int length = i - start + 1;
+            if (length >= 3) {
+                if (!found) {
+                    printf("Output: [[%d,%d]]", start, i);
+                    found = 1;
+                } else {
+                    printf(",[%d,%d]", start, i);
+                }
+            }
+            start = i + 1;  // move to next group
+        }
+    }
+
+    if (!found)
+        printf("Output: []");
+    printf("\n");
+}
+
+int main() {
+    char s1[] = "abbxxxxzzy";
+    char s2[] = "abc";
+
+    printf("Input: s = \"%s\"\n", s1);
+    largeGroupPositions(s1);
+
+    printf("\nInput: s = \"%s\"\n", s2);
+    largeGroupPositions(s2);
+
+    return 0;
+}
