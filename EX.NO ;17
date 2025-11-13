@@ -1,0 +1,39 @@
+#include <stdio.h>
+
+// Function to compute how full the (query_row, query_glass) is
+double champagneTower(int poured, int query_row, int query_glass) {
+    double glasses[101] = {0.0}; // Since maximum rows = 100
+    glasses[0] = poured;
+
+    // Simulate row by row
+    for (int row = 0; row < query_row; row++) {
+        // Process current row from right to left to avoid overwriting
+        for (int i = row; i >= 0; i--) {
+            double overflow = (glasses[i] - 1.0) / 2.0;
+            if (overflow > 0) {
+                glasses[i] = 1.0;
+                glasses[i + 1] += overflow;
+                glasses[i] = 1.0;
+                glasses[i] += overflow;
+            } else {
+                glasses[i] = (glasses[i] < 1.0) ? glasses[i] : 1.0;
+            }
+        }
+    }
+
+    // The glass fullness at the target position (capped at 1)
+    return (glasses[query_glass] < 1.0) ? glasses[query_glass] : 1.0;
+}
+
+int main() {
+    int poured1 = 1, query_row1 = 1, query_glass1 = 1;
+    int poured2 = 2, query_row2 = 1, query_glass2 = 1;
+
+    printf("Input: poured = %d, query_row = %d, query_glass = %d\n", poured1, query_row1, query_glass1);
+    printf("Output: %.5f\n\n", champagneTower(poured1, query_row1, query_glass1));
+
+    printf("Input: poured = %d, query_row = %d, query_glass = %d\n", poured2, query_row2, query_glass2);
+    printf("Output: %.5f\n", champagneTower(poured2, query_row2, query_glass2));
+
+    return 0;
+}
