@@ -1,0 +1,68 @@
+#include <stdio.h>
+
+// Function to swap two elements
+void swap(int *a, int *b) {
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+// Partition function for QuickSort
+int partition(int arr[], int low, int high) {
+    int pivot = arr[high];
+    int i = (low - 1);
+
+    for (int j = low; j < high; j++) {
+        if (arr[j] <= pivot) {
+            i++;
+            swap(&arr[i], &arr[j]);
+        }
+    }
+    swap(&arr[i + 1], &arr[high]);
+    return (i + 1);
+}
+
+// QuickSort algorithm
+void quickSort(int arr[], int low, int high) {
+    if (low < high) {
+        int pi = partition(arr, low, high);
+        quickSort(arr, low, pi - 1);
+        quickSort(arr, pi + 1, high);
+    }
+}
+
+// Function to process the list
+void processList(int arr[], int n) {
+    if (n == 0) {
+        printf("The list is empty.\n");
+        return;
+    }
+
+    // Sort the list
+    quickSort(arr, 0, n - 1);
+
+    // The maximum element will be the last element after sorting
+    printf("Maximum element: %d\n", arr[n - 1]);
+}
+
+int main() {
+    // Test Case 1: Empty list
+    int arr1[] = {};
+    int n1 = 0;
+    printf("Test Case 1:\n");
+    processList(arr1, n1);
+
+    // Test Case 2: Single element list
+    int arr2[] = {5};
+    int n2 = sizeof(arr2) / sizeof(arr2[0]);
+    printf("\nTest Case 2:\n");
+    processList(arr2, n2);
+
+    // Test Case 3: All elements are the same
+    int arr3[] = {3, 3, 3, 3, 3};
+    int n3 = sizeof(arr3) / sizeof(arr3[0]);
+    printf("\nTest Case 3:\n");
+    processList(arr3, n3);
+
+    return 0;
+}
