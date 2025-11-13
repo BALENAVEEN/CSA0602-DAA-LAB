@@ -1,0 +1,126 @@
+#include <stdio.h>
+
+#define M 4
+#define N 3
+
+// Directions for 8 neighbors
+int directions[8][2] = {
+    {-1, -1}, {-1, 0}, {-1, 1},
+    {0, -1},          {0, 1},
+    {1, -1},  {1, 0},  {1, 1}
+};
+
+// Function to count live neighbors
+int countLiveNeighbors(int board[M][N], int x, int y) {
+    int count = 0;
+    for (int d = 0; d < 8; d++) {
+        int nx = x + directions[d][0];
+        int ny = y + directions[d][1];
+        if (nx >= 0 && nx < M && ny >= 0 && ny < N && (board[nx][ny] == 1))
+            count++;
+    }
+    return count;
+}
+
+// Function to compute next generation
+void gameOfLife(int board[M][N]) {
+    int next[M][N];
+
+    // Compute next state for each cell
+    for (int i = 0; i < M; i++) {
+        for (int j = 0; j < N; j++) {
+            int liveNeighbors = countLiveNeighbors(board, i, j);
+
+            if (board[i][j] == 1) {
+                // Rule 1 and 3
+                if (liveNeighbors < 2 || liveNeighbors > 3)
+                    next[i][j] = 0;
+                else
+                    next[i][j] = 1; // Rule 2
+            } else {
+                // Rule 4
+                if (liveNeighbors == 3)
+                    next[i][j] = 1;
+                else
+                    next[i][j] = 0;
+            }
+        }
+    }
+
+    // Copy next state to original board
+    for (int i = 0; i < M; i++)
+        for (int j = 0; j < N; j++)
+            board[i][j] = next[i][j];
+}
+
+// Function to print board
+void printBoard(int board[M][N]) {
+    for (int i = 0; i < M; i++) {
+        for (int j = 0; j < N; j++)
+            printf("%d ", board[i][j]);
+        printf("\n");
+    }
+}
+
+int main() {
+    // Example 1
+    int board1[M][N] = {
+        {0,1,0},
+        {0,0,1},
+        {1,1,1},
+        {0,0,0}
+    };
+
+    printf("Input:\n");
+    printBoard(board1);
+    gameOfLife(board1);
+    printf("\nNext Generation:\n");
+    printBoard(board1);
+
+    // Example 2
+    int board2[2][2] = {
+        {1,1},
+        {1,0}
+    };
+
+    printf("\n\nExample 2 Input:\n");
+    for (int i = 0; i < 2; i++) {
+        for (int j = 0; j < 2; j++)
+            printf("%d ", board2[i][j]);
+        printf("\n");
+    }
+
+    int M2 = 2, N2 = 2;
+    int next2[2][2];
+    int directions2[8][2] = {
+        {-1,-1},{-1,0},{-1,1},
+        {0,-1},{0,1},
+        {1,-1},{1,0},{1,1}
+    };
+
+    // Manual next generation for board2
+    for (int i = 0; i < M2; i++) {
+        for (int j = 0; j < N2; j++) {
+            int count = 0;
+            for (int d = 0; d < 8; d++) {
+                int nx = i + directions2[d][0];
+                int ny = j + directions2[d][1];
+                if (nx >= 0 && nx < M2 && ny >= 0 && ny < N2 && board2[nx][ny] == 1)
+                    count++;
+            }
+            if (board2[i][j] == 1)
+                next2[i][j] = (count == 2 || count == 3) ? 1 : 0;
+            else
+                next2[i][j] = (count == 3) ? 1 : 0;
+        }
+    }
+
+    printf("\nExample 2 Output:\n");
+    for (int i = 0; i < M2; i++) {
+        for (int j = 0; j < N2; j++)
+            printf("%d ", next2[i][j]);
+        printf("\n");
+    }
+
+    return 0;
+}
