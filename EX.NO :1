@@ -1,0 +1,34 @@
+#include <stdio.h>
+#include <string.h>
+
+// Function to check if a string is palindrome
+int isPalindrome(char str[]) {
+    int left = 0;
+    int right = strlen(str) - 1;
+    while (left < right) {
+        if (str[left] != str[right])
+            return 0; // Not palindrome
+        left++;
+        right--;
+    }
+    return 1; // Palindrome
+}
+
+int main() {
+    char words[][20] = {"abc", "car", "ada", "racecar", "cool"};
+    int n = sizeof(words) / sizeof(words[0]);
+    int found = 0;
+
+    for (int i = 0; i < n; i++) {
+        if (isPalindrome(words[i])) {
+            printf("First palindromic string: %s\n", words[i]);
+            found = 1;
+            break;
+        }
+    }
+
+    if (!found)
+        printf("No palindromic string found.\n");
+
+    return 0;
+}
