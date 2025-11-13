@@ -1,0 +1,44 @@
+#include <stdio.h>
+#include <string.h>
+
+// Function to find the first occurrence of needle in haystack
+int strStr(char haystack[], char needle[]) {
+    int n = strlen(haystack);
+    int m = strlen(needle);
+
+    // Edge case: if needle is empty
+    if (m == 0)
+        return 0;
+
+    // Loop through each character in haystack
+    for (int i = 0; i <= n - m; i++) {
+        int j;
+        // Check if substring starting at i matches needle
+        for (j = 0; j < m; j++) {
+            if (haystack[i + j] != needle[j])
+                break;
+        }
+        if (j == m)
+            return i; // Found full match
+    }
+
+    return -1; // No match found
+}
+
+int main() {
+    char haystack1[] = "sadbutsad";
+    char needle1[] = "sad";
+
+    char haystack2[] = "leetcode";
+    char needle2[] = "leeto";
+
+    printf("Example 1:\n");
+    printf("Input: haystack = \"%s\", needle = \"%s\"\n", haystack1, needle1);
+    printf("Output: %d\n", strStr(haystack1, needle1)); // Expected 0
+
+    printf("\nExample 2:\n");
+    printf("Input: haystack = \"%s\", needle = \"%s\"\n", haystack2, needle2);
+    printf("Output: %d\n", strStr(haystack2, needle2)); // Expected -1
+
+    return 0;
+}
