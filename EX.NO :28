@@ -1,0 +1,60 @@
+#include <stdio.h>
+
+typedef struct {
+    int x, y;
+} Point;
+
+// Function to check if all points lie on the same side of a line
+int checkSide(Point a, Point b, Point p) {
+    int val = (b.x - a.x) * (p.y - a.y) - (b.y - a.y) * (p.x - a.x);
+    if (val > 0) return 1;      // Left side
+    if (val < 0) return -1;     // Right side
+    return 0;                   // On the line
+}
+
+int main() {
+    Point points[] = {{1, 1}, {4, 6}, {8, 1}, {0, 0}, {3, 3}};
+    int n = sizeof(points) / sizeof(points[0]);
+
+    Point hull[50];
+    int h = 0;
+
+    // Brute-force: Check every pair of points
+    for (int i = 0; i < n; i++) {
+        for (int j = i + 1; j < n; j++) {
+
+            int pos = 0, neg = 0;
+
+            for (int k = 0; k < n; k++) {
+                if (k == i || k == j) continue;
+
+                int side = checkSide(points[i], points[j], points[k]);
+
+                if (side > 0) pos = 1;
+                if (side < 0) neg = 1;
+            }
+
+            // If all points lie on one side (or on the line), this edge is part of hull
+            if (!(pos && neg)) {
+                hull[h++] = points[i];
+                hull[h++] = points[j];
+            }
+        }
+    }
+
+    // Remove duplicates and print convex hull
+    printf("Convex Hull Points:\n");
+    for (int i = 0; i < h; i++) {
+        int unique = 1;
+        for (int j = 0; j < i; j++) {
+            if (hull[i].x == hull[j].x && hull[i].y == hull[j].y) {
+                unique = 0;
+                break;
+            }
+        }
+        if (unique)
+            printf("(%d, %d)\n", hull[i].x, hull[i].y);
+    }
+
+    return 0;
+}
