@@ -1,0 +1,73 @@
+#include <stdio.h>
+
+int total_value(int items[], int count, int values[]) {
+    int sum = 0;
+    for (int i = 0; i < count; i++)
+        sum += values[items[i]];
+    return sum;
+}
+
+int is_feasible(int items[], int count, int weights[], int capacity) {
+    int totalWeight = 0;
+    for (int i = 0; i < count; i++)
+        totalWeight += weights[items[i]];
+    return totalWeight <= capacity;
+}
+
+void knapsack(int n, int weights[], int values[], int capacity) {
+    int bestValue = 0;
+    int bestSet[20], bestCount = 0;
+
+    int totalSubsets = 1 << n;  // 2^n subsets
+
+    for (int mask = 0; mask < totalSubsets; mask++) {
+        int selected[20], count = 0;
+
+        // Build subset from bitmask
+        for (int i = 0; i < n; i++) {
+            if (mask & (1 << i)) {
+                selected[count++] = i;
+            }
+        }
+
+        if (is_feasible(selected, count, weights, capacity)) {
+            int val = total_value(selected, count, values);
+
+            if (val > bestValue) {
+                bestValue = val;
+                bestCount = count;
+                for (int i = 0; i < count; i++)
+                    bestSet[i] = selected[i];
+            }
+        }
+    }
+
+    printf("Optimal Selection: [");
+    for (int i = 0; i < bestCount; i++) {
+        printf("%d", bestSet[i]);
+        if (i < bestCount - 1) printf(", ");
+    }
+    printf("]\n");
+
+    printf("Total Value: %d\n", bestValue);
+}
+
+int main() {
+    // Test Case 1
+    int weights1[] = {2, 3, 1};
+    int values1[] = {4, 5, 3};
+    int capacity1 = 4;
+
+    printf("Test Case 1:\n");
+    knapsack(3, weights1, values1, capacity1);
+
+    // Test Case 2
+    int weights2[] = {1, 2, 3, 4};
+    int values2[] = {2, 4, 6, 3};
+    int capacity2 = 6;
+
+    printf("\nTest Case 2:\n");
+    knapsack(4, weights2, values2, capacity2);
+
+    return 0;
+}
