@@ -1,0 +1,79 @@
+#include <stdio.h>
+
+long long comparisons = 0;  // Global counter for comparisons
+
+// Merge two halves
+void merge(int arr[], int left, int mid, int right) {
+    int n1 = mid - left + 1;
+    int n2 = right - mid;
+
+    int L[n1], R[n2];
+
+    // Copy data
+    for (int i = 0; i < n1; i++)
+        L[i] = arr[left + i];
+    for (int j = 0; j < n2; j++)
+        R[j] = arr[mid + 1 + j];
+
+    int i = 0, j = 0, k = left;
+
+    // Merge temp arrays back into arr[]
+    while (i < n1 && j < n2) {
+        comparisons++;  // Count comparison
+
+        if (L[i] <= R[j])
+            arr[k++] = L[i++];
+        else
+            arr[k++] = R[j++];
+    }
+
+    // Copy remaining elements of L[]
+    while (i < n1)
+        arr[k++] = L[i++];
+
+    // Copy remaining elements of R[]
+    while (j < n2)
+        arr[k++] = R[j++];
+}
+
+// Merge Sort function
+void mergeSort(int arr[], int left, int right) {
+    if (left < right) {
+        int mid = (left + right) / 2;
+
+        mergeSort(arr, left, mid);
+        mergeSort(arr, mid + 1, right);
+
+        merge(arr, left, mid, right);
+    }
+}
+
+void printArray(int arr[], int n) {
+    for (int i = 0; i < n; i++)
+        printf("%d ", arr[i]);
+    printf("\n");
+}
+
+int main() {
+    // Test Case 1
+    int a1[] = {12, 4, 78, 23, 45, 67, 89, 1};
+    int n1 = 8;
+    comparisons = 0;
+
+    mergeSort(a1, 0, n1 - 1);
+    printf("Test Case 1 Sorted Output:\n");
+    printArray(a1, n1);
+    printf("Comparisons Made: %lld\n\n", comparisons);
+
+    // Test Case 2
+    int a2[] = {38, 27, 43, 3, 9, 82, 10};
+    int n2 = 7;
+    comparisons = 0;
+
+    mergeSort(a2, 0, n2 - 1);
+    printf("Test Case 2 Sorted Output:\n");
+    printArray(a2, n2);
+    printf("Comparisons Made: %lld\n", comparisons);
+
+    return 0;
+}
