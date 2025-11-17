@@ -1,0 +1,81 @@
+#include <stdio.h>
+#include <math.h>
+#include <limits.h>
+
+#define MAX 10
+
+typedef struct {
+    double x, y;
+} City;
+
+double distance(CCity, City b) {
+    return sqrt((a.x - b.x)*(a.x - b.x) + (a.y - b.y)*(a.y - b.y));
+}
+
+double minDistance = 1e9;
+int bestPath[MAX];
+int n;
+
+void swap(int *a, int *b) {
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+// Calculate total path distance
+double calculateTotalDistance(City cities[], int path[]) {
+    double total = 0;
+
+    // Start at city 0
+    total += distance(cities[0], cities[path[1]]);
+
+    // Middle cities
+    for (int i = 1; i < n; i++)
+        total += distance(cities[path[i]], cities[path[i+1]]);
+
+    // Return to start
+    total += distance(cities[path[n]], cities[0]);
+
+    return total;
+}
+
+// Generate permutations
+void permute(City cities[], int path[], int l, int r) {
+    if (l == r) {
+        double d = calculateTotalDistance(cities, path);
+        if (d < minDistance) {
+            minDistance = d;
+            for (int i = 0; i <= n; i++)
+                bestPath[i] = path[i];
+        }
+        return;
+    }
+    for (int i = l; i <= r; i++) {
+        swap(&path[l], &path[i]);
+        permute(cities, path, l+1, r);
+        swap(&path[l], &path[i]);
+    }
+}
+
+int main() {
+    City cities[] = { {0,0}, {2,5}, {5,2}, {6,6} };
+    n = sizeof(cities) / sizeof(cities[0]) - 1;  
+
+    int path[MAX];
+
+    // Prepare path: start always from city 0
+    for (int i = 0; i <= n; i++)
+        path[i] = i;
+
+    permute(cities, path, 1, n);
+
+    printf("\nShortest Distance: %.2f\n", minDistance);
+    printf("Best Path: 0 ");
+
+    for (int i = 1; i <= n; i++)
+        printf("-> %d ", bestPath[i]);
+
+    printf("-> 0\n");
+
+    return 0;
+}
